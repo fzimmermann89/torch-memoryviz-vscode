@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Generated at build-time
+vendor/
+
+# OS / editor
+.DS_Store
+*.log
+.vscode-test/
+.vsix/

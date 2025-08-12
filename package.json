@@ -1,0 +1,51 @@
+{
+    "name": "memoryviz-vscode",
+    "displayName": "PyTorch MemoryViz",
+    "description": "Offline PyTorch MemoryViz in a VS Code webview",
+    "version": "0.0.1",
+    "private": false,
+    "publisher": "fzimmermann89",
+    "author": "Felix Zimmermann",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/fzimmermann89/memoryviz-vscode.git"
+    },
+    "engines": {
+        "vscode": "^1.80.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:memoryviz.open"
+    ],
+    "main": "./dist/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "memoryviz.open",
+                "title": "Open PyTorch MemoryViz"
+            }
+        ]
+    },
+    "scripts": {
+        "prebuild": "bun run scripts/fetch-memoryviz.ts",
+        "build": "bun build src/extension.ts --outdir dist --format cjs --target node --external vscode && bun build src/webview/index.ts --outfile dist/webview.js --target browser --minify",
+        "watch": "bun build src/extension.ts --outdir dist --format cjs --target node --external vscode --watch & bun build src/webview/index.ts --outfile dist/webview.js --target browser --minify --watch",
+        "package": "vsce package",
+        "publish": "vsce publish"
+    },
+    "devDependencies": {
+        "@types/node": "^20.0.0",
+        "@types/vscode": "^1.80.0",
+        "vsce": "^2.15.0"
+    },
+    "dependencies": {
+        "d3": "^5.16.0",
+        "d3-axis": "^1.0.12",
+        "d3-scale": "^1.0.7",
+        "d3-zoom": "^1.8.3",
+        "d3-brush": "^1.1.6"
+    }
+}

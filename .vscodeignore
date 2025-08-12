@@ -1,0 +1,15 @@
+# Exclude development files from VSIX
+.github/
+.vscode/
+scripts/
+src/
+node_modules/
+*.log
+bun.lockb
+tsconfig.json
+README.md
+# Keep essential docs if desired by removing from ignore
+# CHANGELOG.md
+# LICENSE
+# Include built output only
+!dist/**
