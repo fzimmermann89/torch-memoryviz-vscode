@@ -33,6 +33,12 @@ async function fetchAndPatch(): Promise<void> {
             `import { brushX } from "d3-brush";`
         );
 
+    console.log("Hiding default banner text...");
+    code = code.replace(
+        /selection_to_div\[''\]\s*=\s*body\s*\.append\('div'\)\s*\.text\([\s\S]*?Drag and drop or select a file to load a local snapshot\.[\s\S]*?uploaded\.[\s\S]*?\)\s*;?/m,
+        "selection_to_div[''] = body.append('div').style('display','none');"
+    );
+
     const outPath = join(import.meta.dir, "../vendor/MemoryViz.js");
     mkdirSync(dirname(outPath), { recursive: true });
     writeFileSync(outPath, code);

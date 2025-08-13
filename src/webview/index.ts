@@ -19,6 +19,14 @@ function toBase64(buffer: ArrayBuffer): string {
     return btoa(binary);
 }
 
+function selectLastSnapshot(): void {
+    const sel = document.querySelector<HTMLSelectElement>("body select");
+    if (sel && sel.options.length > 0) {
+        sel.selectedIndex = sel.options.length - 1;
+        sel.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+}
+
 async function filesToBase64Entries(fileList: FileList | File[]): Promise<{ name: string; base64: string }[]> {
     const files = Array.from(fileList as File[]);
     const entries = await Promise.all(
@@ -39,7 +47,7 @@ function buildStartCard(): void {
 
     const hint = document.createElement("span");
     hint.className = "mvz-hint";
-    hint.textContent = "Drag & drop or choose a trace:";
+    hint.textContent = "Load a trace:";
 
     const remoteBtn = document.createElement("button");
     remoteBtn.className = "mvz-button";
@@ -60,6 +68,7 @@ function buildStartCard(): void {
         if (input.files && input.files.length > 0) {
             const entries = await filesToBase64Entries(input.files);
             add_local_files(entries, "Active Memory Timeline");
+            selectLastSnapshot();
         }
         (this as HTMLInputElement).value = "";
     });
@@ -82,6 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!ev.dataTransfer || ev.dataTransfer.files.length === 0) return;
         const entries = await filesToBase64Entries(ev.dataTransfer.files);
         add_local_files(entries, "Active Memory Timeline");
+        selectLastSnapshot();
     };
 
     document.body.addEventListener("dragover", onDragOver);
@@ -92,5 +102,6 @@ window.addEventListener("message", (ev: MessageEvent) => {
     const msg = ev.data;
     if (msg?.type === "filesFromExtension" && Array.isArray(msg.files)) {
         add_local_files(msg.files, "Active Memory Timeline");
+        selectLastSnapshot();
     }
 });

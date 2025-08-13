@@ -1,8 +1,8 @@
 {
     "name": "memoryviz-vscode",
     "displayName": "PyTorch MemoryViz",
-    "description": "Offline PyTorch MemoryViz in a VS Code webview",
-    "version": "0.0.1",
+    "description": "Visualizer for PyTorch memory profiler traces",
+    "version": "0.0.2",
     "private": false,
     "publisher": "fzimmermann89",
     "author": "Felix Zimmermann",
@@ -18,7 +18,9 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:memoryviz.open"
+        "onCommand:memoryviz.open",
+        "onCommand:memoryviz.openFile",
+        "onCustomEditor:memoryviz.viewer"
     ],
     "main": "./dist/extension.js",
     "contributes": {
@@ -26,6 +28,47 @@
             {
                 "command": "memoryviz.open",
                 "title": "Open PyTorch MemoryViz"
+            },
+            {
+                "command": "memoryviz.openFile",
+                "title": "Open with PyTorch MemoryViz"
+            }
+        ],
+        "menus": {
+            "explorer/context": [
+                {
+                    "command": "memoryviz.openFile",
+                    "group": "navigation@100",
+                    "when": "resourceExtname == .pickle"
+                },
+                {
+                    "command": "memoryviz.openFile",
+                    "group": "navigation@100",
+                    "when": "resourceExtname == .pkl"
+                },
+                {
+                    "command": "memoryviz.openFile",
+                    "group": "navigation@100",
+                    "when": "resourceExtname == .json"
+                }
+            ]
+        },
+        "customEditors": [
+            {
+                "viewType": "memoryviz.viewer",
+                "displayName": "PyTorch MemoryViz",
+                "selector": [
+                    {
+                        "filenamePattern": "*.pickle"
+                    },
+                    {
+                        "filenamePattern": "*.pkl"
+                    },
+                    {
+                        "filenamePattern": "*.json"
+                    }
+                ],
+                "priority": "option"
             }
         ]
     },
